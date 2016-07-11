@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>it.nerdammer</groupId>
-        <artifactId>donphan-parent</artifactId>
+        <artifactId>akodon-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../donphan-parent</relativePath>
+        <relativePath>../akodon-parent</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>donphan-monolith</artifactId>
+    <artifactId>akodon-monolith</artifactId>
 
     <dependencies>
 

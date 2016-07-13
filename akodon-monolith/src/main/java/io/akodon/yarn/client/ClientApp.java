@@ -1,5 +1,6 @@
-package io.akodon;
+package io.akodon.yarn.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -40,19 +41,15 @@ import org.slf4j.LoggerFactory;
  *
  */
 //@SpringBootApplication
-public class HelloWorld {
+public class ClientApp {
 
-    private static Logger LOG = LoggerFactory.getLogger(HelloWorld.class);
+    private static Logger LOG = LoggerFactory.getLogger(ClientApp.class);
 
     private static String appName = "Example";
 
-    private static String appMasterJar = "/home/nferraro/git/owned/akodon/akodon-example/target/akodon-example-1.0-SNAPSHOT.jar";
+    private static String appMasterJar = "akodon-monolith/target/akodon-monolith-1.0-SNAPSHOT.jar";
 
-    private static String appMasterJarPath = "akodon-example-1.0-SNAPSHOT.jar";
-
-    private static String shellScriptPath = "";// "/home/nferraro/git/owned/akodon/akodon-example/target/run.sh";
-
-    public static final String SCRIPT_PATH = "ExecScript";
+    private static String appMasterJarPath = "akodon-monolith-1.0-SNAPSHOT.jar";
 
     // App master priority
     private static int amPriority = 0;
@@ -64,7 +61,7 @@ public class HelloWorld {
     // Amt. of virtual core resource to request for to run the App Master
     private static int amVCores = 1;
 
-    private static String appMasterMainClass= "io.akodon.Example";
+    private static String appMasterMainClass= "io.akodon.yarn.am.ApplicationMasterApp";
 
     // Amt of memory to request for container in which shell script will be executed
     private static int containerMemory = 10;
@@ -81,7 +78,7 @@ public class HelloWorld {
 
 
     public static void main(String[] args) throws Exception {
-//        SpringApplication.run(HelloWorld.class, args);
+//        SpringApplication.run(ClientApp.class, args);
 
         Configuration conf = new Configuration();
         conf.set("yarn.resourcemanager.hostname", "quickstart.cloudera");
@@ -102,17 +99,23 @@ public class HelloWorld {
         appContext.setKeepContainersAcrossApplicationAttempts(true);
         appContext.setApplicationName(appName);
 
-        // set local resources for the application master
-        // local files or archives as needed
-        // In this scenario, the jar file for the application master is part of the local resources
-        Map<String, LocalResource> localResources = new HashMap<String, LocalResource>();
+//        // set local resources for the application master
+//        // local files or archives as needed
+//        // In this scenario, the jar file for the application master is part of the local resources
+//        Map<String, LocalResource> localResources = new HashMap<String, LocalResource>();
 
         LOG.info("Copy App Master jar from local filesystem and add to local environment");
         // Copy the application master jar to the filesystem
         // Create a local resource to point to the destination jar path
+
         FileSystem fs = FileSystem.get(conf);
-        addToLocalResources(fs, appMasterJar, appMasterJarPath, appId.toString(),
-                localResources, null);
+
+        ResourceDeployer deployer = new ResourceDeployer(fs, appContext);
+        deployer.add(appMasterJarPath, new File(appMasterJar));
+
+//        FileSystem fs = FileSystem.get(conf);
+//        addToLocalResources(fs, appMasterJar, appMasterJarPath, appId.toString(),
+//                localResources, null);
 
         // The shell script has to be made available on the final container(s)
         // where it will be executed.
@@ -120,21 +123,22 @@ public class HelloWorld {
         // to the yarn framework.
         // We do not need to set this as a local resource for the application
         // master as the application master does not need it.
-        String hdfsShellScriptLocation = "";
-        long hdfsShellScriptLen = 0;
-        long hdfsShellScriptTimestamp = 0;
-        if (!shellScriptPath.isEmpty()) {
-            Path shellSrc = new Path(shellScriptPath);
-            String shellPathSuffix =
-                    appName + "/" + appId.toString() + "/" + SCRIPT_PATH;
-            Path shellDst =
-                    new Path(fs.getHomeDirectory(), shellPathSuffix);
-            fs.copyFromLocalFile(false, true, shellSrc, shellDst);
-            hdfsShellScriptLocation = shellDst.toUri().toString();
-            FileStatus shellFileStatus = fs.getFileStatus(shellDst);
-            hdfsShellScriptLen = shellFileStatus.getLen();
-            hdfsShellScriptTimestamp = shellFileStatus.getModificationTime();
-        }
+
+//        String hdfsShellScriptLocation = "";
+//        long hdfsShellScriptLen = 0;
+//        long hdfsShellScriptTimestamp = 0;
+//        if (!shellScriptPath.isEmpty()) {
+//            Path shellSrc = new Path(shellScriptPath);
+//            String shellPathSuffix =
+//                    appName + "/" + appId.toString() + "/" + SCRIPT_PATH;
+//            Path shellDst =
+//                    new Path(fs.getHomeDirectory(), shellPathSuffix);
+//            fs.copyFromLocalFile(false, true, shellSrc, shellDst);
+//            hdfsShellScriptLocation = shellDst.toUri().toString();
+//            FileStatus shellFileStatus = fs.getFileStatus(shellDst);
+//            hdfsShellScriptLen = shellFileStatus.getLen();
+//            hdfsShellScriptTimestamp = shellFileStatus.getModificationTime();
+//        }
 
 //        if (!shellCommand.isEmpty()) {
 //            addToLocalResources(fs, null, shellCommandPath, appId.toString(),
@@ -153,9 +157,9 @@ public class HelloWorld {
         // put location of shell script into env
         // using the env info, the application master will create the correct local resource for the
         // eventual containers that will be launched to execute the shell scripts
-        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTLOCATION, hdfsShellScriptLocation);
-        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTTIMESTAMP, Long.toString(hdfsShellScriptTimestamp));
-        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTLEN, Long.toString(hdfsShellScriptLen));
+//        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTLOCATION, hdfsShellScriptLocation);
+//        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTTIMESTAMP, Long.toString(hdfsShellScriptTimestamp));
+//        env.put(DSConstants.DISTRIBUTEDSHELLSCRIPTLEN, Long.toString(hdfsShellScriptLen));
 
         // Add AppMaster.jar location to classpath
         // At some point we should not be required to add
@@ -175,8 +179,8 @@ public class HelloWorld {
 //        classPathEnv.append(ApplicationConstants.CLASS_PATH_SEPARATOR).append(
 //                "./log4j.properties");
 
-        classPathEnv.append(ApplicationConstants.CLASS_PATH_SEPARATOR).append(
-                "./" + appMasterJarPath);
+//        classPathEnv.append(ApplicationConstants.CLASS_PATH_SEPARATOR).append(
+//                "./" + appMasterJarPath);
 
         env.put("CLASSPATH", classPathEnv.toString());
 
@@ -219,7 +223,7 @@ public class HelloWorld {
 
         // Set up the container launch context for the application master
         ContainerLaunchContext amContainer = ContainerLaunchContext.newInstance(
-                localResources, env, commands, null, null, null);
+                deployer.getDeployedResources(), env, commands, null, null, null);
 
         // Set up resource type requirements
         // For now, both memory and vcores are supported, so we set memory and
@@ -273,32 +277,4 @@ public class HelloWorld {
         yarnClient.submitApplication(appContext);
     }
 
-
-    private static void addToLocalResources(FileSystem fs, String fileSrcPath,
-                                            String fileDstPath, String appId, Map<String, LocalResource> localResources,
-                                            String resources) throws IOException {
-        String suffix =
-                appName + "/" + appId + "/" + fileDstPath;
-        Path dst =
-                new Path(fs.getHomeDirectory(), suffix);
-        if (fileSrcPath == null) {
-            FSDataOutputStream ostream = null;
-            try {
-                ostream = FileSystem
-                        .create(fs, dst, new FsPermission((short) 0710));
-                ostream.writeUTF(resources);
-            } finally {
-                IOUtils.closeQuietly(ostream);
-            }
-        } else {
-            fs.copyFromLocalFile(new Path(fileSrcPath), dst);
-        }
-        FileStatus scFileStatus = fs.getFileStatus(dst);
-        LocalResource scRsrc =
-                LocalResource.newInstance(
-                        ConverterUtils.getYarnUrlFromURI(dst.toUri()),
-                        LocalResourceType.FILE, LocalResourceVisibility.APPLICATION,
-                        scFileStatus.getLen(), scFileStatus.getModificationTime());
-        localResources.put(fileDstPath, scRsrc);
-    }
 }

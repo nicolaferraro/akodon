@@ -16,9 +16,12 @@
 
 
     <modules>
-        <module>akodon-monolith</module>
+        <module>akodon-client</module>
         <module>akodon-parent</module>
         <module>akodon-example</module>
+        <module>akodon-master</module>
+        <module>akodon-core</module>
+        <module>akodon-maven-plugin</module>
     </modules>
 
 

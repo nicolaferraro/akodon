@@ -11,13 +11,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>akodon-monolith</artifactId>
+    <artifactId>akodon-client</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>it.nerdammer</groupId>
+            <artifactId>akodon-core</artifactId>
         </dependency>
 
         <dependency>
@@ -33,5 +38,21 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

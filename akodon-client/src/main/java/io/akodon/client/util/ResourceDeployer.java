@@ -1,4 +1,4 @@
-package io.akodon.yarn.client;
+package io.akodon.client.util;
 
 import java.io.File;
 import java.io.FileInputStream;

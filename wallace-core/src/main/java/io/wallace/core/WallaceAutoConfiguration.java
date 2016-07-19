@@ -1,18 +1,18 @@
-package io.wallace.client;
+package io.wallace.core;
 
 import org.apache.hadoop.conf.Configuration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
-import io.wallace.core.WallaceProperties;
 
 /**
  *
  */
 @org.springframework.context.annotation.Configuration
 @EnableConfigurationProperties(WallaceProperties.class)
-public class ClientAutoConfiguration {
+@ConditionalOnClass(Configuration.class)
+public class WallaceAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

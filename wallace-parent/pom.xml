@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
 
     <properties>
+        <hadoop-version>2.7.2</hadoop-version>
+
         <maven-plugin-annotations-version>3.4</maven-plugin-annotations-version>
         <maven-plugin-plugin-version>3.4</maven-plugin-plugin-version>
         <maven-plugin-api-version>3.3.9</maven-plugin-api-version>
@@ -34,6 +36,13 @@
             </dependency>
 
             <!-- Libs -->
+
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop-version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>

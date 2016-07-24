@@ -109,6 +109,9 @@ public class WallaceMasterDeployer {
             vargs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + wallaceConfig.getMaster().getDebugPort() + ",suspend=y");
         }
 
+        // Sets the deploy mode to yarn for the application master
+        vargs.add("-Dwallace.master.deploy-mode=yarn");
+
         vargs.add("-jar " + WallaceConstants.LIB_MASTER_JAR);
 
         vargs.add("1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/AppMaster.stdout");

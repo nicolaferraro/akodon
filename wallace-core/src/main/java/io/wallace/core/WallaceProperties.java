@@ -55,6 +55,11 @@ public class WallaceProperties {
          */
         private int debugPort = 8000;
 
+        /**
+         * Sets the deploy mode for the application master.
+         */
+        private DeployMode deployMode = DeployMode.STANDALONE;
+
         public MasterProperties() {
         }
 
@@ -106,6 +111,16 @@ public class WallaceProperties {
             this.debugPort = debugPort;
         }
 
+        public DeployMode getDeployMode() {
+            return deployMode;
+        }
+
+        public void setDeployMode(DeployMode deployMode) {
+            this.deployMode = deployMode;
+        }
+
+        public enum DeployMode {STANDALONE, YARN};
+
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder("MasterProperties{");
@@ -115,6 +130,7 @@ public class WallaceProperties {
             sb.append(", yarnQueue='").append(yarnQueue).append('\'');
             sb.append(", debug=").append(debug);
             sb.append(", debugPort=").append(debugPort);
+            sb.append(", deployMode=").append(deployMode);
             sb.append('}');
             return sb.toString();
         }

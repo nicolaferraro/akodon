@@ -104,6 +104,11 @@ public class WallaceMasterDeployer {
         LOG.info("Setting up app master command");
         vargs.add(ApplicationConstants.Environment.JAVA_HOME.$$() + "/bin/java");
         vargs.add("-Xmx" + wallaceConfig.getMaster().getMemory() + "m");
+
+        if(wallaceConfig.getMaster().isDebug()) {
+            vargs.add("-agentlib:jdwp=transport=dt_socket,server=y,address=" + wallaceConfig.getMaster().getDebugPort() + ",suspend=y");
+        }
+
         vargs.add("-jar " + WallaceConstants.LIB_MASTER_JAR);
 
         vargs.add("1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/AppMaster.stdout");

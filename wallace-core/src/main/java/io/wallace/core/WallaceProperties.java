@@ -45,6 +45,16 @@ public class WallaceProperties {
          */
         private String yarnQueue = "default";
 
+        /**
+         * Allows remotely debugging the application master.
+         */
+        private boolean debug = false;
+
+        /**
+         * Sets the listen port for the debugger.
+         */
+        private int debugPort = 8000;
+
         public MasterProperties() {
         }
 
@@ -80,6 +90,22 @@ public class WallaceProperties {
             this.yarnQueue = yarnQueue;
         }
 
+        public boolean isDebug() {
+            return debug;
+        }
+
+        public void setDebug(boolean debug) {
+            this.debug = debug;
+        }
+
+        public int getDebugPort() {
+            return debugPort;
+        }
+
+        public void setDebugPort(int debugPort) {
+            this.debugPort = debugPort;
+        }
+
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder("MasterProperties{");
@@ -87,6 +113,8 @@ public class WallaceProperties {
             sb.append(", virtualCores=").append(virtualCores);
             sb.append(", priority=").append(priority);
             sb.append(", yarnQueue='").append(yarnQueue).append('\'');
+            sb.append(", debug=").append(debug);
+            sb.append(", debugPort=").append(debugPort);
             sb.append('}');
             return sb.toString();
         }

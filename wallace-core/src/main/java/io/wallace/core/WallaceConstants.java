@@ -5,7 +5,7 @@ package io.wallace.core;
  */
 public final class WallaceConstants {
 
-    public static final String WALLACE_INF = "/WALLACE-INF";
+    public static final String WALLACE_INF = "WALLACE-INF";
 
     public static final String LIB_ROOT = WALLACE_INF + "/lib";
 

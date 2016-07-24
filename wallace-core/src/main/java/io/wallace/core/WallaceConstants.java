@@ -5,7 +5,7 @@ package io.wallace.core;
  */
 public final class WallaceConstants {
 
-    public static final String ZIP_ROOT = "/wallace";
+    public static final String ZIP_ROOT = "/WALLACE-INF";
 
     public static final String ZIP_APPLICATION_JAR = "application.jar";
 

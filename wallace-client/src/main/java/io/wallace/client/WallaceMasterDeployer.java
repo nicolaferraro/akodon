@@ -78,8 +78,8 @@ public class WallaceMasterDeployer {
 
         // Deploy the application master jar
         ResourceDeployer deployer = new ResourceDeployer(fs, appContext);
-        deployer.add(WallaceConstants.ZIP_MASTER_JAR, jarFinder.getApplicationMasterJar());
-        deployer.add(WallaceConstants.ZIP_APPLICATION_JAR, jarFinder.getApplicationJar());
+        deployer.add(WallaceConstants.LIB_MASTER_JAR, jarFinder.getApplicationMasterJar());
+        deployer.add(WallaceConstants.LIB_APPLICATION_JAR, jarFinder.getApplicationJar());
 
         // Set the env variables to be setup in the env where the application master will be run
         LOG.info("Set the environment for the application master");
@@ -104,7 +104,7 @@ public class WallaceMasterDeployer {
         LOG.info("Setting up app master command");
         vargs.add(ApplicationConstants.Environment.JAVA_HOME.$$() + "/bin/java");
         vargs.add("-Xmx" + wallaceConfig.getMaster().getMemory() + "m");
-        vargs.add("-jar " + WallaceConstants.ZIP_MASTER_JAR);
+        vargs.add("-jar " + WallaceConstants.LIB_MASTER_JAR);
 
         vargs.add("1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/AppMaster.stdout");
         vargs.add("2>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + "/AppMaster.stderr");

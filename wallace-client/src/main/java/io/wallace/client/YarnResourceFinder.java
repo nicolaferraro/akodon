@@ -18,11 +18,11 @@ public class YarnResourceFinder {
     private Logger LOG = LoggerFactory.getLogger(YarnResourceFinder.class);
 
     public InputStream getApplicationMasterJar() throws IOException {
-        return getJar(WallaceConstants.ZIP_MASTER_JAR_PATH);
+        return getJar(WallaceConstants.LIB_MASTER_JAR_PATH);
     }
 
     public InputStream getApplicationJar() throws IOException {
-        return getJar(WallaceConstants.ZIP_APPLICATION_JAR_PATH);
+        return getJar(WallaceConstants.LIB_APPLICATION_JAR_PATH);
     }
 
     private InputStream getJar(final String module) throws IOException {

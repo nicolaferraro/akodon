@@ -60,8 +60,8 @@ public class RepackageMojo extends AbstractMojo {
         File wallaceClient = resolve("wallace-client");
 
         Map<String, DataSource> entries = new TreeMap<>();
-        entries.put(WallaceConstants.ZIP_MASTER_JAR_PATH, new FileDataSource(wallaceMaster));
-        entries.put(WallaceConstants.ZIP_APPLICATION_JAR_PATH, new FileDataSource(backup));
+        entries.put(WallaceConstants.LIB_MASTER_JAR_PATH, new FileDataSource(wallaceMaster));
+        entries.put(WallaceConstants.LIB_APPLICATION_JAR_PATH, new FileDataSource(backup));
         for(File appProp : getApplicationPropertiesFiles()) {
             entries.put("/" + appProp.getName(), new FileDataSource(appProp));
         }

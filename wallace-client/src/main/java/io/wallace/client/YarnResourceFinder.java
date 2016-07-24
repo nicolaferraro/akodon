@@ -18,15 +18,22 @@ public class YarnResourceFinder {
     private Logger LOG = LoggerFactory.getLogger(YarnResourceFinder.class);
 
     public InputStream getApplicationMasterJar() throws IOException {
+        LOG.debug("Retrieving master jar in {}", WallaceConstants.LIB_MASTER_JAR_PATH);
         return getJar(WallaceConstants.LIB_MASTER_JAR_PATH);
     }
 
     public InputStream getApplicationJar() throws IOException {
+        LOG.debug("Retrieving application jar in {}", WallaceConstants.LIB_APPLICATION_JAR_PATH);
         return getJar(WallaceConstants.LIB_APPLICATION_JAR_PATH);
     }
 
     private InputStream getJar(final String module) throws IOException {
-        return YarnResourceFinder.class.getResourceAsStream(module);
+
+        InputStream stream = YarnResourceFinder.class.getResourceAsStream(module);
+        if (stream == null) {
+            throw new IllegalStateException("Unable to find jar module " + module + " in the application package");
+        }
+        return stream;
     }
 
 }
